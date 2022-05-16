@@ -11,15 +11,14 @@ import {
   portBConfig,
   portCConfig,
   portDConfig,
-  avrInterrupt
-} from 'avr8js';
-import { loadHex } from './intelhex';
-
+  avrInterrupt,
+} from "avr8js";
+import { loadHex } from "./intelhex";
 
 // ATmega328p params
 const FLASH = 0x8000;
 
-export type PORT = 'A' | 'B' | 'C' | 'D' //| 'E' | 'F' | 'G' | 'H' | 'J' | 'K' | 'L';
+export type PORT = "A" | "B" | "C" | "D"; //| 'E' | 'F' | 'G' | 'H' | 'J' | 'K' | 'L';
 
 //const PORTS:Array<PORT> = ['B','C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L'];
 
@@ -40,15 +39,14 @@ export class AVRRunner {
     loadHex(hex, new Uint8Array(this.program.buffer));
     this.cpu = new CPU(this.program);
 
-    this.timer0  = new AVRTimer(this.cpu, timer0Config);
-    this.timer1  = new AVRTimer(this.cpu, timer1Config);
-    this.timer2  = new AVRTimer(this.cpu, timer2Config);
-
+    this.timer0 = new AVRTimer(this.cpu, timer0Config);
+    this.timer1 = new AVRTimer(this.cpu, timer1Config);
+    this.timer2 = new AVRTimer(this.cpu, timer2Config);
 
     //this.port.set('A', new AVRIOPort(this.cpu, portAConfig));
-    this.port.set('B', new AVRIOPort(this.cpu, portBConfig));
-    this.port.set('C', new AVRIOPort(this.cpu, portCConfig));
-    this.port.set('D', new AVRIOPort(this.cpu, portDConfig));
+    this.port.set("B", new AVRIOPort(this.cpu, portBConfig));
+    this.port.set("C", new AVRIOPort(this.cpu, portCConfig));
+    this.port.set("D", new AVRIOPort(this.cpu, portDConfig));
     //this.port.set('E', new AVRIOPort(this.cpu, portEConfig));
     //this.port.set('F', new AVRIOPort(this.cpu, portFConfig));
     //this.port.set('G', new AVRIOPort(this.cpu, portGConfig));
@@ -63,10 +61,14 @@ export class AVRRunner {
     this.cpu.readHooks[usart0Config.UDR] = () => this.serialBuffer.shift() || 0;
   }
 
-  async execute(callback: (cpu: CPU) => void, cyclesPerFrame: number, frameDelayMilliseconds: number) {
+  async execute(
+    callback: (cpu: CPU) => void,
+    cyclesPerFrame: number,
+    frameDelayMilliseconds: number
+  ) {
     this.stopped = false;
     while (true) {
-        for (let i = 0; i < cyclesPerFrame; i++) {
+      for (let i = 0; i < cyclesPerFrame; i++) {
         avrInstruction(this.cpu);
         this.timer0.tick();
         this.timer1.tick();
@@ -74,19 +76,25 @@ export class AVRRunner {
         this.usart.tick();
 
         const ucsra = this.cpu.data[usart0Config.UCSRA];
-        if (this.cpu.interruptsEnabled && ucsra & 0x20 && this.serialBuffer.length > 0) {
-            avrInterrupt(this.cpu, usart0Config.rxCompleteInterrupt);
+        if (
+          this.cpu.interruptsEnabled &&
+          ucsra & 0x20 &&
+          this.serialBuffer.length > 0
+        ) {
+          avrInterrupt(this.cpu, usart0Config.rxCompleteInterrupt);
         }
-    }
-    callback(this.cpu);
-    await new Promise((resolve) => setTimeout(resolve, frameDelayMilliseconds));
-    if (this.stopped) {
+      }
+      callback(this.cpu);
+      await new Promise((resolve) =>
+        setTimeout(resolve, frameDelayMilliseconds)
+      );
+      if (this.stopped) {
         break;
+      }
     }
   }
-
-  serial(input:string) {
-    for (var i = 0; i < input.length; i++){
+  serial(input: string) {
+    for (var i = 0; i < input.length; i++) {
       this.serialBuffer.push(input.charCodeAt(i));
     }
   }
