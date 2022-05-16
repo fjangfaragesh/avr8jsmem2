@@ -1,4 +1,4 @@
-//controlFunctionsCallback(stopFunction, sendSerialFunction): diese funktion wird con compileAndRun ausgeführt, wenn die Funktion, die den avr stopt bereit ist
+// controlFunctionsCallback(stopFunction, sendSerialFunction): diese funktion wird con compileAndRun ausgeführt, wenn die Funktion, die den avr stopt bereit ist
 
 export async function compileAndRun(codeString,divId, cyclesPerFrame,frameDelayMilliseconds, maxNumberOfCycles, controlFunctionsCallback, serialOutputHanlder) {
     if (serialOutputHanlder == undefined) serialOutputHanlder = console.log;

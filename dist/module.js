@@ -1,14 +1,9 @@
-require("@wokwi/elements");
-var $8zHUo$avr8js = require("avr8js");
-
-function $parcel$export(e, n, v, s) {
-  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
-}
-
-$parcel$export(module.exports, "AVR8jsMem", () => $882b6d93070905b3$export$e5ed3c8de4b2a69);
+import "@wokwi/elements";
+import {CPU as $hgUW1$CPU, AVRTimer as $hgUW1$AVRTimer, timer0Config as $hgUW1$timer0Config, timer1Config as $hgUW1$timer1Config, timer2Config as $hgUW1$timer2Config, AVRIOPort as $hgUW1$AVRIOPort, portBConfig as $hgUW1$portBConfig, portCConfig as $hgUW1$portCConfig, portDConfig as $hgUW1$portDConfig, AVRUSART as $hgUW1$AVRUSART, usart0Config as $hgUW1$usart0Config, avrInstruction as $hgUW1$avrInstruction, avrInterrupt as $hgUW1$avrInterrupt} from "avr8js";
 
 
-function $dfdb317f157de136$export$6907aa30e09916b(source, target) {
+
+function $19f3cc392fb3f816$export$6907aa30e09916b(source, target) {
     for (const line of source.split("\n"))if (line[0] === ":" && line.substr(7, 2) === "00") {
         const bytes = parseInt(line.substr(1, 2), 16);
         const addr = parseInt(line.substr(3, 4), 16);
@@ -18,22 +13,22 @@ function $dfdb317f157de136$export$6907aa30e09916b(source, target) {
 
 
 // ATmega328p params
-const $51ed46b8955c1431$var$FLASH = 0x8000;
-class $51ed46b8955c1431$export$31e2b2d64952a5f1 {
-    program = new Uint16Array($51ed46b8955c1431$var$FLASH);
+const $192fb86f1f48148c$var$FLASH = 0x8000;
+class $192fb86f1f48148c$export$31e2b2d64952a5f1 {
+    program = new Uint16Array($192fb86f1f48148c$var$FLASH);
     port = new Map();
     MHZ = 16e6;
     stopped = false;
     constructor(hex){
-        $dfdb317f157de136$export$6907aa30e09916b(hex, new Uint8Array(this.program.buffer));
-        this.cpu = new $8zHUo$avr8js.CPU(this.program);
-        this.timer0 = new $8zHUo$avr8js.AVRTimer(this.cpu, $8zHUo$avr8js.timer0Config);
-        this.timer1 = new $8zHUo$avr8js.AVRTimer(this.cpu, $8zHUo$avr8js.timer1Config);
-        this.timer2 = new $8zHUo$avr8js.AVRTimer(this.cpu, $8zHUo$avr8js.timer2Config);
+        $19f3cc392fb3f816$export$6907aa30e09916b(hex, new Uint8Array(this.program.buffer));
+        this.cpu = new $hgUW1$CPU(this.program);
+        this.timer0 = new $hgUW1$AVRTimer(this.cpu, $hgUW1$timer0Config);
+        this.timer1 = new $hgUW1$AVRTimer(this.cpu, $hgUW1$timer1Config);
+        this.timer2 = new $hgUW1$AVRTimer(this.cpu, $hgUW1$timer2Config);
         //this.port.set('A', new AVRIOPort(this.cpu, portAConfig));
-        this.port.set("B", new $8zHUo$avr8js.AVRIOPort(this.cpu, $8zHUo$avr8js.portBConfig));
-        this.port.set("C", new $8zHUo$avr8js.AVRIOPort(this.cpu, $8zHUo$avr8js.portCConfig));
-        this.port.set("D", new $8zHUo$avr8js.AVRIOPort(this.cpu, $8zHUo$avr8js.portDConfig));
+        this.port.set("B", new $hgUW1$AVRIOPort(this.cpu, $hgUW1$portBConfig));
+        this.port.set("C", new $hgUW1$AVRIOPort(this.cpu, $hgUW1$portCConfig));
+        this.port.set("D", new $hgUW1$AVRIOPort(this.cpu, $hgUW1$portDConfig));
         //this.port.set('E', new AVRIOPort(this.cpu, portEConfig));
         //this.port.set('F', new AVRIOPort(this.cpu, portFConfig));
         //this.port.set('G', new AVRIOPort(this.cpu, portGConfig));
@@ -43,21 +38,21 @@ class $51ed46b8955c1431$export$31e2b2d64952a5f1 {
         //this.port.set('L', new AVRIOPort(this.cpu, portLConfig));
         // create an ArrayBuffer with a size in bytes
         this.serialBuffer = [];
-        this.usart = new $8zHUo$avr8js.AVRUSART(this.cpu, $8zHUo$avr8js.usart0Config, this.MHZ);
-        this.cpu.readHooks[$8zHUo$avr8js.usart0Config.UDR] = ()=>this.serialBuffer.shift() || 0
+        this.usart = new $hgUW1$AVRUSART(this.cpu, $hgUW1$usart0Config, this.MHZ);
+        this.cpu.readHooks[$hgUW1$usart0Config.UDR] = ()=>this.serialBuffer.shift() || 0
         ;
     }
     async execute(callback, cyclesPerFrame, frameDelayMilliseconds) {
         this.stopped = false;
         while(true){
             for(let i = 0; i < cyclesPerFrame; i++){
-                $8zHUo$avr8js.avrInstruction(this.cpu);
+                $hgUW1$avrInstruction(this.cpu);
                 this.timer0.tick();
                 this.timer1.tick();
                 this.timer2.tick();
                 this.usart.tick();
-                const ucsra = this.cpu.data[$8zHUo$avr8js.usart0Config.UCSRA];
-                if (this.cpu.interruptsEnabled && ucsra & 0x20 && this.serialBuffer.length > 0) $8zHUo$avr8js.avrInterrupt(this.cpu, $8zHUo$avr8js.usart0Config.rxCompleteInterrupt);
+                const ucsra = this.cpu.data[$hgUW1$usart0Config.UCSRA];
+                if (this.cpu.interruptsEnabled && ucsra & 0x20 && this.serialBuffer.length > 0) $hgUW1$avrInterrupt(this.cpu, $hgUW1$usart0Config.rxCompleteInterrupt);
             }
             callback(this.cpu);
             await new Promise((resolve)=>setTimeout(resolve, frameDelayMilliseconds)
@@ -74,20 +69,20 @@ class $51ed46b8955c1431$export$31e2b2d64952a5f1 {
 }
 
 
-function $121c38b353ebc6df$var$zeroPad(value, length) {
+function $a82cae2056f82919$var$zeroPad(value, length) {
     let sval = value.toString();
     while(sval.length < length)sval = "0" + sval;
     return sval;
 }
-function $121c38b353ebc6df$export$3203edd9e5edd663(seconds) {
+function $a82cae2056f82919$export$3203edd9e5edd663(seconds) {
     const ms = Math.floor(seconds * 1000) % 1000;
     const secs = Math.floor(seconds % 60);
     const mins = Math.floor(seconds / 60);
-    return `${$121c38b353ebc6df$var$zeroPad(mins, 2)}:${$121c38b353ebc6df$var$zeroPad(secs, 2)}.${$121c38b353ebc6df$var$zeroPad(ms, 3)}`;
+    return `${$a82cae2056f82919$var$zeroPad(mins, 2)}:${$a82cae2056f82919$var$zeroPad(secs, 2)}.${$a82cae2056f82919$var$zeroPad(ms, 3)}`;
 }
 
 
-async function $04884edc5baa97f2$export$528d7c97418b1bdd(codeString, divId, cyclesPerFrame, frameDelayMilliseconds, maxNumberOfCycles, controlFunctionsCallback, serialOutputHanlder) {
+async function $dcc3e86f12d9c346$export$528d7c97418b1bdd(codeString, divId, cyclesPerFrame, frameDelayMilliseconds, maxNumberOfCycles, controlFunctionsCallback, serialOutputHanlder) {
     if (serialOutputHanlder == undefined) serialOutputHanlder = console.log;
     serialOutputHanlder("compiling...");
     let e = await AVR8js.build(codeString, []);
@@ -122,14 +117,14 @@ async function $04884edc5baa97f2$export$528d7c97418b1bdd(codeString, divId, cycl
 }
 
 
-function $cc5d1395482c1c60$export$5947992841066971(integerValue, bitPosition) {
+function $6483d6c67caa549a$export$5947992841066971(integerValue, bitPosition) {
     return integerValue >> bitPosition & 1;
 }
-function $cc5d1395482c1c60$export$b25202b2d7056da9(b0, b1, b2, b3) {
+function $6483d6c67caa549a$export$b25202b2d7056da9(b0, b1, b2, b3) {
     //b1,b2,b3 optional
     return b0 & 0xff | (b1 & 0xff) << 8 | (b2 & 0xff) << 16 | (b3 & 0xff) << 24;
 }
-function $cc5d1395482c1c60$export$66b6f4f54e66c670() {
+function $6483d6c67caa549a$export$66b6f4f54e66c670() {
     let i = 0;
     let ret = 0;
     for (let a of arguments){
@@ -138,17 +133,17 @@ function $cc5d1395482c1c60$export$66b6f4f54e66c670() {
     }
     return ret;
 }
-function $cc5d1395482c1c60$export$fc04dc125cfc7ba0(integerValue, bytePosition) {
+function $6483d6c67caa549a$export$fc04dc125cfc7ba0(integerValue, bytePosition) {
     return integerValue >> bytePosition * 8 & 0xff;
 }
 
 
-window.compileAndRun = $04884edc5baa97f2$export$528d7c97418b1bdd;
-window.extractBit = $cc5d1395482c1c60$export$5947992841066971;
-window.bytesToInt = $cc5d1395482c1c60$export$b25202b2d7056da9;
-window.bitsToInt = $cc5d1395482c1c60$export$66b6f4f54e66c670;
-window.extractByte = $cc5d1395482c1c60$export$fc04dc125cfc7ba0;
-function $882b6d93070905b3$var$pinPort(e) {
+window.compileAndRun = $dcc3e86f12d9c346$export$528d7c97418b1bdd;
+window.extractBit = $6483d6c67caa549a$export$5947992841066971;
+window.bytesToInt = $6483d6c67caa549a$export$b25202b2d7056da9;
+window.bitsToInt = $6483d6c67caa549a$export$66b6f4f54e66c670;
+window.extractByte = $6483d6c67caa549a$export$fc04dc125cfc7ba0;
+function $149c1bd638913645$var$pinPort(e) {
     let port;
     let pin = e.getAttribute('pin');
     pin = pin ? parseInt(pin, 10) : null;
@@ -162,7 +157,7 @@ function $882b6d93070905b3$var$pinPort(e) {
         port
     ];
 }
-const $882b6d93070905b3$export$e5ed3c8de4b2a69 = {
+const $149c1bd638913645$export$e5ed3c8de4b2a69 = {
     /** compiles the program
    *
    * @param sketch The cpp code as string
@@ -226,7 +221,7 @@ const $882b6d93070905b3$export$e5ed3c8de4b2a69 = {
         const BUZZER = container.querySelectorAll('wokwi-buzzer');
         const PushButton = container.querySelectorAll('wokwi-pushbutton');
         const MemOuts = container.querySelectorAll('memout-element');
-        const runner = new $51ed46b8955c1431$export$31e2b2d64952a5f1(hex);
+        const runner = new $192fb86f1f48148c$export$31e2b2d64952a5f1(hex);
         MHZ = MHZ || 16000000;
         cyclesPerFrame = cyclesPerFrame || 500000;
         frameDelayMilliseconds = frameDelayMilliseconds || 0;
@@ -235,7 +230,7 @@ const $882b6d93070905b3$export$e5ed3c8de4b2a69 = {
             const port = runner.port.get(PORT);
             if (port) {
                 PushButton.forEach((button)=>{
-                    let [pin, p] = $882b6d93070905b3$var$pinPort(button);
+                    let [pin, p] = $149c1bd638913645$var$pinPort(button);
                     if (pin && p === PORT) {
                         port.setPin(pin % 8, false);
                         button.addEventListener('button-press', ()=>{
@@ -248,15 +243,15 @@ const $882b6d93070905b3$export$e5ed3c8de4b2a69 = {
                 });
                 port.addListener((value)=>{
                     LEDs.forEach((e)=>{
-                        let [pin, p] = $882b6d93070905b3$var$pinPort(e);
+                        let [pin, p] = $149c1bd638913645$var$pinPort(e);
                         if (pin && p === PORT) e.value = value & 1 << pin - 8 ? true : false;
                     });
                     BUZZER.forEach((e)=>{
-                        let [pin, p] = $882b6d93070905b3$var$pinPort(e);
+                        let [pin, p] = $149c1bd638913645$var$pinPort(e);
                         if (pin && p === PORT) e.hasSignal = value & 1 << pin - 8 ? true : false;
                     });
                     SEG7.forEach((e)=>{
-                        let [pin, p] = $882b6d93070905b3$var$pinPort(e);
+                        let [pin, p] = $149c1bd638913645$var$pinPort(e);
                         if (pin && p === PORT) e.values = [
                             value & 1,
                             value & 2,
@@ -278,13 +273,14 @@ const $882b6d93070905b3$export$e5ed3c8de4b2a69 = {
         const timeSpan = container.querySelector('#simulation-time');
         runner.execute((cpu)=>{
             for (let m of MemOuts)m.updateData(cpu.data, cpu.cycles);
-            const time = $121c38b353ebc6df$export$3203edd9e5edd663(cpu.cycles / MHZ);
+            const time = $a82cae2056f82919$export$3203edd9e5edd663(cpu.cycles / MHZ);
             if (timeSpan) timeSpan.textContent = 'Simulation time: ' + time;
         }, cyclesPerFrame, frameDelayMilliseconds);
         return runner;
     }
 };
-window.AVR8js = $882b6d93070905b3$export$e5ed3c8de4b2a69;
+window.AVR8js = $149c1bd638913645$export$e5ed3c8de4b2a69;
 
 
-//# sourceMappingURL=index.js.map
+export {$149c1bd638913645$export$e5ed3c8de4b2a69 as AVR8jsMem};
+//# sourceMappingURL=module.js.map

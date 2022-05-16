@@ -1,25 +1,44 @@
 {
-    "name": "avr8js-mem",
-    "version": "1.0.0",
-    "description": "...",
-    "main": "dist/index.js",
-    "module": "dist/module.js",
-    "scripts": {
-        "watch": "npx parcel serve ./src/index.ts",
-        "build": "npx clean-dir dist && npx parcel build ./src/index.ts"
+  "name": "avr8js-mem",
+  "version": "1.0.0",
+  "description": "...",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "watch": "npx parcel serve ./src/index.ts",
+    "build": "npx parcel build"
+  },
+  "author": "Ich",
+  "license": "ISC",
+  "devDependencies": {
+    "@liascript/devserver": "^1.0.5--0.9.51",
+    "@parcel/packager-ts": "^2.5.0",
+    "@parcel/transformer-typescript-types": "^2.5.0",
+    "buffer": "^6.0.3",
+    "clean-dir": "^1.0.3",
+    "parcel": "^2.5.0",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "@swc/helpers": "^0.3.13",
+    "@webcomponents/custom-elements": "^1.4.3",
+    "@wokwi/elements": "^0.27.3",
+    "avr8js": "^0.11.4",
+    "echarts": "^5.1.1",
+    "regenerator-runtime": "^0.13.9"
+  },
+  "targets": {
+    "modern": {
+      "engines": {
+        "browsers": "Chrome 80"
+      }
     },
-    "author": "Ich",
-    "license": "ISC",
-    "devDependencies": {
-        "@liascript/devserver": "^1.0.5--0.9.51",
-        "buffer": "^6.0.3",
-        "clean-dir": "^1.0.3",
-        "parcel": "^2.2.1"
-    },
-    "dependencies": {
-        "@webcomponents/custom-elements": "^1.4.3",
-        "@wokwi/elements": "^0.27.2",
-        "avr8js": "^0.11.4",
-        "echarts": "^5.1.1"
+    "legacy": {
+      "engines": {
+        "browsers": "> 0.5%, last 2 versions, not dead"
+      }
     }
+  }
 }
